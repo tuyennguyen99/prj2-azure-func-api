@@ -9,7 +9,8 @@
       "methods": [
         "get",
         "post"
-      ]
+      ],
+      "connection": "CosmosMongoDBConnection"
     },
     {
       "type": "http",

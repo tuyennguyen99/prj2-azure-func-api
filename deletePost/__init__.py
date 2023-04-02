@@ -1,11 +1,12 @@
-import azure.functions as func
+import logging
 import os
 import pymongo
 from bson.objectid import ObjectId
+import azure.functions as func
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-
+    logging.info('Delete post trigger function processed a request.')
     id = req.params.get('id')
 
     if id:
@@ -13,14 +14,14 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             url = os.environ['CosmosMongoDBConnection']
             client = pymongo.MongoClient(url)
             database = client['azure']
-            collection = database['advertisements']
+            collection = database['posts']
             
             query = {'_id': ObjectId(id)}
             result = collection.delete_one(query)
             return func.HttpResponse("")
 
         except:
-            print("could not connect to mongodb")
+            logging.error("could not connect to mongodb")
             return func.HttpResponse("could not connect to mongodb", status_code=500)
 
     else:
